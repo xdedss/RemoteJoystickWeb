@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.IO;
 using System.Threading;
+using System.Web;
 
 namespace RemoteJoystickWeb
 {
@@ -11,7 +12,8 @@ namespace RemoteJoystickWeb
     {
         static void Main(string[] args)
         {
-            args = DefaultArgs(args, "192.168.1.2:8000", "example", "8000", "8001");
+            var localAddress = GetLocalIP();
+            args = DefaultArgs(args, "http://{0}:8000/".FormatSelf(localAddress), "example", "8000", "8001");
             string pageAddress = args[0];
             string layout = args[1];
             int httpPort = int.Parse(args[2]);
@@ -60,8 +62,7 @@ namespace RemoteJoystickWeb
             });
 
             // QR code
-            var localAddress = GetLocalIP();
-            var mobileAddress = string.Format("http://{0}/?s={1}:{2}&l={3}", pageAddress, localAddress, socketPort, GetLayout(layout));
+            var mobileAddress = string.Format("{0}?s={1}:{2}&l={3}", pageAddress, localAddress, socketPort, HttpUtility.UrlEncode(GetLayout(layout)));
             var QRImage = QRUtils.GenerateImage(mobileAddress, 6);
             var tempPath = Path.Combine(Environment.CurrentDirectory, "qr.png");
             QRImage.Save(tempPath, System.Drawing.Imaging.ImageFormat.Png);
@@ -71,6 +72,10 @@ namespace RemoteJoystickWeb
             ColorfulWriteLine("1. Open port {0} and {1} in the firewall.".FormatSelf(socketPort, httpPort), ConsoleColor.Yellow);
             ColorfulWriteLine("2. Make sure your device and PC are in the same LAN.", ConsoleColor.Yellow);
             ColorfulWriteLine("3. Scan the QR code with your device.", ConsoleColor.Yellow);
+            if (pageAddress.StartsWith("https:"))
+            {
+                ColorfulWriteLine("4. If you are using android chrome, goto chrome://flags and find \"insecure origins treated as secure\", add ws://{0}:{1}/".FormatSelf(localAddress, socketPort), ConsoleColor.Yellow);
+            }
             Console.WriteLine(mobileAddress);
 
             //var t = 0.0;
@@ -100,20 +105,15 @@ namespace RemoteJoystickWeb
                 p.StartInfo.RedirectStandardOutput = true;//由调用程序获取输出信息
                 p.StartInfo.RedirectStandardError = true;//重定向标准错误输出
                 p.StartInfo.CreateNoWindow = true;//不显示程序窗口
-                p.Start();//启动程序
+                p.Start();
 
-                //向cmd窗口发送输入信息
                 p.StandardInput.WriteLine("chcp 437 \n ipconfig &exit");
 
                 p.StandardInput.AutoFlush = true;
-                //p.StandardInput.WriteLine("exit");
-                //向标准输入写入要执行的命令。这里使用&是批处理命令的符号，表示前面一个命令不管是否执行成功都执行后面(exit)命令，如果不执行exit命令，后面调用ReadToEnd()方法会假死
-                //同类的符号还有&&和||前者表示必须前一个命令执行成功才会执行后面的命令，后者表示必须前一个命令执行失败才会执行后面的命令
 
-                //获取cmd窗口的输出信息
                 string output = p.StandardOutput.ReadToEnd();
 
-                p.WaitForExit();//等待程序执行完退出进程
+                p.WaitForExit();
                 p.Close();
 
                 var arr = output.Split(new string[] { "\r\n\r\n" }, StringSplitOptions.None);
@@ -121,12 +121,12 @@ namespace RemoteJoystickWeb
                 {
                     if (arr[i].Contains("LAN:"))
                     {
-                        ColorfulWriteLine(arr[i + 1], ConsoleColor.Cyan);
                         var lines = arr[i + 1].Split(new string[] { "\r\n" }, StringSplitOptions.None);
                         for (int j = 0; j < arr.Length; j++)
                         {
                             if (lines[j].Contains("IPv4"))
                             {
+                                ColorfulWriteLine(lines[j], ConsoleColor.Cyan);
                                 return lines[j].Split(new string[] { " : " }, StringSplitOptions.None)[1];
                             }
                         }
@@ -195,7 +195,7 @@ namespace RemoteJoystickWeb
             var res = new string[defaultValues.Length];
             for (int i = 0; i < res.Length; i++)
             {
-                if (i < args.Length) {
+                if (i < args.Length && args[i] != "/") {
                     res[i] = args[i];
                 }
                 else
