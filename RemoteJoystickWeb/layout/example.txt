@@ -1,0 +1,26 @@
+5x8|j0-x-y,,,,b1|,k-z,k-x-somename,,b2|,k-space,,,b3|,,,,b4|,,,,b5|,,,,b6|,,j1-z-n-3x3,,b7-R|,,,,b8-CustomName-h
+
+
+
+this file describes the layout of the web page.
+
+
+  5x8 : defines the size of the grid. 5 columns and 8 rows.
+  Each "|" means one row, each row has 5 cells separated by ",". Put identifiers in cells to create input widgets.
+
+joystick examples :
+  j0-x-y : j0 is the gyroscope, -x-y means the input goes into x and y axis of the virtual joystick.
+  j1-z-n-3x3 : j1 is an ordinary joystick, -z-n means the horizontal input goes into the z axis of the virtual joystick and the virtical input is ignored(n is ignore). 3x3 is the size of the joystick.
+    there are 8 axes available on the virtual joystick : x, y, z, rx, ry, rz, sl0, sl1
+
+joystick button examples :
+  b1 : button 1 of the virtual joystick
+  b7-R : button 7 of the virtual joystick, but renamed as "R"
+  b8-CustomName-h : button 8, renamed as "CustomName", and is a toggle button
+    b1~b16 are available. If you are using b9 or above, you need to change vJoy configuration because vJoy only supports 8 buttons by default. 
+
+keyboard examples :
+  k-z : emulates "Z" key in keyboard
+  k-x-somename : emulates "X" key in keyboard, renamed as "somename"
+  k-space : emulates space key in keyboard
+    for more key names see https://github.com/michaelnoonan/inputsimulator/blob/master/WindowsInput/Native/VirtualKeyCode.cs

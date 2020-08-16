@@ -1,0 +1,19 @@
+5x8|j0-x-y,,,,b1--h|,k-z-down,k-x-up,,b2--h|,,,,b3--h|,,,,b4--h|,,,,b5--h|,,,,b6--h|,,j1-z-n-3x1,,b7-R-h|,,,,b8-N-h
+
+
+
+this file describes the layout of the web page.
+
+examples :
+  5x8 : defines the size of the grid. 5 columns and 8 rows.
+  each "|" means one row, each row has 5 cells separated by ","
+
+  j0-x-y : j0 is the gyroscope, -x-y means the input goes into x and y axis of the virtual joystick.
+  j1-z-n-3x1 : j1 is an ordinary joystick, -z-n means the horizontal input goes into the z axis of the virtual joystick and the virtical input is ignored(n is ignore). 
+
+  b1 : button 1 of the virtual joystick
+  b7-R : button 7 of the virtual joystick, but renamed as "R"
+  b8-N-h : button 8, renamed as "N", and is a toggle button
+
+  k-z : emulates "Z" key in keyboard
+  k-x : emulates "X" key in keyboard
