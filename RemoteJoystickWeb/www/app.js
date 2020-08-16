@@ -107,17 +107,17 @@ function buildLayout(str){
             switch (segments[0]){
                 case 'j0':
                     var nameX = segments[1], nameY = segments[2];
-                    return `<button id="calibrate" class="joystick" jid="0" namex="${nameX}" namey="${nameY}">calibrate</button>`
+                    return `<button id="calibrate" class="joystick" jid="0" namex="${nameX}" namey="${nameY}">${mark('span', 'calibrate', 'class="r90"')}</button>`
                 default:
                     switch (segments[0][0]){
                         case 'b':// button
                             var bId = parseInt(segments[0].substr(1)) - 1;
                             var alias = (!segments[1]) ? (bId + 1) : segments[1];
-                            return `<button class="${segments[2] == 'h' ? 'remote-btn-hold' : 'remote-btn'}" bid="${bId}">${alias}</button>`
+                            return `<button class="${segments[2] == 'h' ? 'remote-btn-hold' : 'remote-btn'}" bid="${bId}">${mark('span', alias, 'class="r90"')}</button>`
                         case 'k':// keyboard
                             var keyname = segments[1];
                             var alias = (!segments[2]) ? keyname : segments[2];
-                            return `<button class="remote-key" keyname="${keyname}">${alias}</button>`
+                            return `<button class="remote-key" keyname="${keyname}">${mark('span', alias, 'class="r90"')}</button>`
                         case 'j':// joystick
                             var jId = parseInt(segments[0].substr(1));
                             var size = ((segments[3] == null) ? '3x3' : segments[3]).split('x');
@@ -249,7 +249,7 @@ controlBuffer = {
             this.buttonsFlip[i] = 0;
             //this.buttonGoto(false, i);
         }
-        for (var i = 0; i < 3; i++){
+        for (var i = 0; i < 8; i++){
             this.joystickGoto(0, 0, i);
         }
     },
