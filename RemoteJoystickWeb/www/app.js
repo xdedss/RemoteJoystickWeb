@@ -348,7 +348,7 @@ if (layout === null) {
     layout = '5x8|j0-x-y,,,,b1|,k-a,k-q,,b2|,k-s,k-w,,b3|,k-d,k-e,,b4|,,,,b5|,,,,b6|,,j1-ry-rx,,b7|,,,,b8';
 }
 else { 
-    layout = decodeURI(layout); 
+    layout = decodeURIComponent(layout); 
 }
 $('#debug').html('server: ' + serverAddress);
 $('#frame').append(buildLayout(layout));
