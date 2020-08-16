@@ -351,7 +351,12 @@ else {
     layout = decodeURIComponent(layout); 
 }
 $('#debug').html('server: ' + serverAddress);
-$('#frame').append(buildLayout(layout));
+try{
+    $('#frame').append(buildLayout(layout));
+}
+catch(e){
+    $('#warning').html('Can not parse layout');
+}
 
 $(document).on('click', '#calibrate', function(e){
     gyro.calibrate();

@@ -13,9 +13,9 @@ namespace RemoteJoystickWeb
         static void Main(string[] args)
         {
             var localAddress = GetLocalIP();
-            args = DefaultArgs(args, "http://{0}:8000/".FormatSelf(localAddress), "example", "8000", "8001");
-            string pageAddress = args[0];
-            string layout = args[1];
+            args = DefaultArgs(args, "example", "http://{0}:8000/".FormatSelf(localAddress), "8000", "8001");
+            string layout = args[0];
+            string pageAddress = args[1];
             int httpPort = int.Parse(args[2]);
             int socketPort = int.Parse(args[3]);
             ColorfulWriteLine("Client page : {0}\nLayout : {1}\nHTTP Port : {2}\nSocket Port : {3}"
@@ -27,9 +27,12 @@ namespace RemoteJoystickWeb
             KeyboardEmulator keyboard = new KeyboardEmulator();
 
             // http server
-            HttpServer httpServer = new WebPageServer(httpPort);
-            Thread thread = new Thread(new ThreadStart(httpServer.Listen));
-            thread.Start();
+            if (httpPort > 0)
+            {
+                HttpServer httpServer = new WebPageServer(httpPort);
+                Thread thread = new Thread(new ThreadStart(httpServer.Listen));
+                thread.Start();
+            }
 
             // Socket server
             SocketServer socketServer = new SocketServer(socketPort);
@@ -67,28 +70,18 @@ namespace RemoteJoystickWeb
             var tempPath = Path.Combine(Environment.CurrentDirectory, "qr.png");
             QRImage.Save(tempPath, System.Drawing.Imaging.ImageFormat.Png);
             QRImage.Dispose();
-            Console.WriteLine("Opening qr.png");
             System.Diagnostics.Process.Start(tempPath);
             ColorfulWriteLine("1. Open port {0} and {1} in the firewall.".FormatSelf(socketPort, httpPort), ConsoleColor.Yellow);
             ColorfulWriteLine("2. Make sure your device and PC are in the same LAN.", ConsoleColor.Yellow);
-            ColorfulWriteLine("3. Scan the QR code with your device.", ConsoleColor.Yellow);
+            ColorfulWriteLine("3. Scan the QR code(qr.png) with your device.", ConsoleColor.Yellow);
             if (pageAddress.StartsWith("https:"))
             {
                 ColorfulWriteLine("4. If you are using android chrome, goto chrome://flags and find \"insecure origins treated as secure\", add ws://{0}:{1}/".FormatSelf(localAddress, socketPort), ConsoleColor.Yellow);
             }
+            ColorfulWriteLine("You might also want to disable auto-rotate and keep a portrait orientation because the UI was designed to fit vertically.", ConsoleColor.Yellow);
             Console.WriteLine(mobileAddress);
 
-            //var t = 0.0;
-            //float x;
-            //while (true)
-            //{
-            //    Thread.Sleep(10);
-            //    t += 0.01 * 5;
-            //    x = (float)Math.Sin(t);
-            //    //Console.WriteLine(x);
-            //    joystick.SetAxis("x", x);
-            //    joystick.SetButton(1, x > 0);
-            //}
+            Console.WriteLine("If you see \"Socket Opened\" below, it means a client has successfully connected to this server.");
 
 
             Console.ReadLine();
