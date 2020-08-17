@@ -31,6 +31,7 @@ namespace RemoteJoystickWeb
         {
             if (ParseKey(name, out VirtualKeyCode res))
             {
+                //Console.WriteLine(res);
                 sim.Keyboard.KeyDown(res);
             }
         }

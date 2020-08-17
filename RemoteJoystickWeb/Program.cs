@@ -59,6 +59,7 @@ namespace RemoteJoystickWeb
                 var arr = msg.Split(' ');
                 if (arr.Length == 2)
                 {
+                    //Console.WriteLine(msg);
                     if (arr[0] == "d") keyboard.KeyDown(arr[1]);
                     else if (arr[0] == "u") keyboard.KeyUp(arr[1]);
                 }

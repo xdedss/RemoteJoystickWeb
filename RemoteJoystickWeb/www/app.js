@@ -107,7 +107,7 @@ function buildLayout(str){
             switch (segments[0]){
                 case 'j0':
                     var nameX = segments[1], nameY = segments[2];
-                    return `<button id="calibrate" class="joystick" jid="0" namex="${nameX}" namey="${nameY}">${mark('span', 'calibrate', 'class="r90"')}</button>`
+                    return `<button id="calibrate" class="joystick" jid="0" namex="${nameX}" namey="${nameY}">${mark('span', 'calibrate<br>gyro', 'class="r90"')}</button>`
                 default:
                     switch (segments[0][0]){
                         case 'b':// button
@@ -345,7 +345,7 @@ while((problem = checkAddress(serverAddress))){
 }
 var layout = getQueryVariable('l', null);
 if (layout === null) { 
-    layout = '5x8|j0-x-y,,,,b1|,k-a,k-q,,b2|,k-s,k-w,,b3|,k-d,k-e,,b4|,,,,b5|,,,,b6|,,j1-ry-rx,,b7|,,,,b8';
+    layout = '5x8|j0-x-y,,,,b1|,k-a,k-q,,b2|,k-s,k-w,,b3|,k-d,k-e,,b4|,,,,b5|,,,,b6|,,j1-ry-rx,,b7-Button7|,,,,b8-Button8';
 }
 else { 
     layout = decodeURIComponent(layout); 
@@ -357,6 +357,13 @@ try{
 catch(e){
     $('#warning').html('Can not parse layout');
 }
+setTimeout(function(){
+    $('button').each((i, e) => {
+        var parent = $(e);
+        var span = parent.children(0);
+        span.css('left', (0.5 * parent.width() - span.width() / 2) + 'px').css('top', (0.5 * parent.height() - span.height() / 2) + 'px');
+    });
+}, 0);
 
 $(document).on('click', '#calibrate', function(e){
     gyro.calibrate();
