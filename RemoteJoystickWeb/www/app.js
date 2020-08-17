@@ -262,21 +262,25 @@ socket = {
         if (this.hasConnection) return;
         var that = this;
         this.ws = new WebSocket('ws://' + serverAddress);
-        ws.onopen = function(){
+        this.ws.onopen = function(){
             that.hasConnection = true;
         };
-        ws.onmessage = function(e) {
+        this.ws.onmessage = function(e) {
             //console.log("message received : " + e.data);
         };
-        ws.onerror = function(e) {
+        this.ws.onerror = function(e) {
             console.log('socket error : ', e);
+            that.hasConnection = false;
+        };
+        this.ws.onclose = function(e) {
             that.hasConnection = false;
         };
     },
     startInterval : function(serverAddress){
         var that = this;
+        that.start(serverAddress);
         setInterval(function(){
-            if (!that.hasConnection){
+            if (that.ws.readyState != 1){
                 try{
                     that.ws.close();
                 }
@@ -290,9 +294,9 @@ socket = {
                     console.log('restart error : ', e);
                 }
             }
-        }, 3000);
+        }, 5000);
         setInterval(function(){
-            $('#wswarning').html(that.hasConnection ? '' : 'websocket connection lost');
+            $('#wswarning').html(that.hasConnection ? '' : ('websocket connection lost' + that.ws.readyState));
         }, 500);
     },
     send : function(sth){
