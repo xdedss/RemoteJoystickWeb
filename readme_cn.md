@@ -6,7 +6,7 @@
 
 # 依赖
 
-[vJoy]([http://vjoystick.sourceforge.net/site/index.php/download-a-install/download](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download) (模拟摇杆)
+[vJoy](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download) (模拟摇杆)
 
 # 兼容性
 

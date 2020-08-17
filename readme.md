@@ -6,7 +6,7 @@ Use smartphone to control PC. Emulates keyboard or joystick input.
 
 # Requirement
 
-[vJoy]([http://vjoystick.sourceforge.net/site/index.php/download-a-install/download](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download) (Joystick emulator)
+[vJoy](http://vjoystick.sourceforge.net/site/index.php/download-a-install/download) (Joystick emulator)
 
 # Compatibility
 
