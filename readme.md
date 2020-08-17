@@ -20,9 +20,9 @@ Download from [Releases](https://github.com/xdedss/RemoteJoystickWeb/releases)
 
 There are two options:
 
-- Easy to use, but doesn't support device orientation control.
-
 ## 1.http
+
+- Easy to use, but doesn't support device orientation control.
 
 ```powershell
 .\RemoteJoystickWeb.exe example.txt
