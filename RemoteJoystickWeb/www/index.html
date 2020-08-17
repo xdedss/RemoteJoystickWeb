@@ -109,15 +109,17 @@
             
             #info{
                 color : rgba(0, 0, 0, 0.5);
-                text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+                background : rgba(255, 255, 255, 0.2);
                 font-size : 6px;
             }
             #debug{
                 color : rgba(0, 0, 0, 0.5);
                 font-size : 6px;
             }
-            #warning{
+            .warning{
+                background : rgba(255, 255, 0, 0.2);
                 color : #f00;
+                font-weight : bold;
             }
         </style>
     </head>
@@ -125,7 +127,8 @@
     <body>
         
         <div id="fg">
-            <pre id="warning">Your device/browser doesnot support orientation event</pre>
+            <pre id="warning" class="warning">Your device/browser doesnot support orientation event</pre>
+            <pre id="wswarning" class="warning"></pre>
             <pre id="info"></pre>
             <pre id="debug"></pre>
         </div>

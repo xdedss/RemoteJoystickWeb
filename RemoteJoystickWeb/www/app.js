@@ -261,23 +261,28 @@ socket = {
     start : function(serverAddress){
         if (this.hasConnection) return;
         var that = this;
-        var ws = new WebSocket('ws://' + serverAddress);
+        this.ws = new WebSocket('ws://' + serverAddress);
         ws.onopen = function(){
             that.hasConnection = true;
         };
         ws.onmessage = function(e) {
-            console.log("message received : " + e.data);
+            //console.log("message received : " + e.data);
         };
         ws.onerror = function(e) {
             console.log('socket error : ', e);
             that.hasConnection = false;
         };
-        this.ws = ws;
     },
     startInterval : function(serverAddress){
         var that = this;
         setInterval(function(){
             if (!that.hasConnection){
+                try{
+                    that.ws.close();
+                }
+                catch(e){
+                    console.log('close error : ', e);
+                }
                 try{
                     that.start(serverAddress);
                 }
@@ -285,7 +290,10 @@ socket = {
                     console.log('restart error : ', e);
                 }
             }
-        }, 1000);
+        }, 3000);
+        setInterval(function(){
+            $('#wswarning').html(that.hasConnection ? '' : 'websocket connection lost');
+        }, 500);
     },
     send : function(sth){
         if (this.hasConnection){
@@ -385,7 +393,7 @@ gyro.start((pitch, roll) => {
     pushAxis = clamp(pitch / (70.0 * deg2rad), -1.0, 1.0);
     controlBuffer.joystickGoto(rightAxis, pushAxis, 0);
 });
-socket.start(serverAddress);
+socket.startInterval(serverAddress);
 
 setInterval(function(){
     var buttonsFlipped = [];
