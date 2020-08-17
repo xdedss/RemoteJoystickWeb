@@ -297,6 +297,7 @@ socket = {
 gyro = {
     q : new Quaternion(),
     qCal : new Quaternion(),
+    keepCalibrate : false,
     getDiff : function(){
         return this.qCal.inverse().mul(this.q);
     },
@@ -310,6 +311,7 @@ gyro = {
             
             var q = Quaternion.fromEuler(event.alpha * deg2rad, event.beta * deg2rad, event.gamma * deg2rad, 'ZXY');
             that.q = q;
+            if (that.keepCalibrate) that.calibrate();
             
             var diff = that.getDiff();
             var dir = diff.rotateVector([1, 0, 0]);
@@ -365,8 +367,12 @@ setTimeout(function(){
     });
 }, 0);
 
-$(document).on('click', '#calibrate', function(e){
+$(document).on('pointerdown', '#calibrate', function(e){
     gyro.calibrate();
+    gyro.keepCalibrate = true;
+}).on('pointerup pointerleave', '#calibrate', function(e){
+    gyro.calibrate();
+    gyro.keepCalibrate = false;
 });
 
 
