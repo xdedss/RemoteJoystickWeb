@@ -234,7 +234,7 @@ controlBuffer = {
             var keyname = (e.target.getAttribute('keyname'));
             that.keyUp(keyname);
         });
-        $('.joystick').on('pointerdown pointermove', function(e){
+        $('div.joystick').on('pointerdown pointermove', function(e){
             var jId = parseInt(e.target.getAttribute('jid'));
             var self = $(e.target);
             var shiftedX = e.offsetX / self.width(), shiftedY = e.offsetY / self.height();
