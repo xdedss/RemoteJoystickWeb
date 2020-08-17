@@ -23,4 +23,6 @@ keyboard examples :
   k-z : emulates "Z" key in keyboard
   k-x-somename : emulates "X" key in keyboard, renamed as "somename"
   k-space : emulates space key in keyboard
+  k-escape : emulates Esc key in keyboard
+  k-vk_1 : emulates "1" key in keyboard
     for more key names see https://github.com/michaelnoonan/inputsimulator/blob/master/WindowsInput/Native/VirtualKeyCode.cs
