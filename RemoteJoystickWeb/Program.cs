@@ -21,7 +21,6 @@ namespace RemoteJoystickWeb
             ColorfulWriteLine("Client page : {0}\nLayout : {1}\nHTTP Port : {2}\nSocket Port : {3}"
                 .FormatSelf(pageAddress, layout, httpPort, socketPort), ConsoleColor.Yellow);
             
-
             // joystick
             JoystickEmulator joystick = new JoystickEmulator(1);
             KeyboardEmulator keyboard = new KeyboardEmulator();
